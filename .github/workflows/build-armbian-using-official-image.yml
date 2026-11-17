@@ -304,6 +304,8 @@ on:
         type: choice
         options:
           - ophub/kernel
+          - A3tery/kernel
+          - A3tery/amlogic-s9xxx-armbian
       kernel_usage:
         description: "Set the tags of the stable kernel."
         required: false
@@ -333,9 +335,10 @@ on:
       builder_name:
         description: "Set Armbian builder signature."
         required: false
-        default: "ophub"
+        default: "A3tery"
         type: choice
         options:
+          - A3tery
           - ophub
           - angel
           - yourname
@@ -432,14 +435,14 @@ jobs:
 
           mkdir -p /builder/build
           ln -sf /builder/build ${{ github.workspace }}/build
-          ln -sf /builder/build /home/runner/work/_actions/ophub/amlogic-s9xxx-armbian/main/build
+          ln -sf /builder/build /home/runner/work/_actions/A3tery/amlogic-s9xxx-armbian/main/build
 
           sudo timedatectl set-timezone "${TZ}"
           echo "build_tag=Armbian${set_release}_arm64_${{ inputs.armbian_edition }}_$(date +"%Y.%m")" >> ${GITHUB_ENV}
           echo "status=success" >> ${GITHUB_OUTPUT}
 
       - name: Rebuild Armbian for target boards
-        uses: ophub/amlogic-s9xxx-armbian@main
+        uses: A3tery/amlogic-s9xxx-armbian@main
         if: ${{ env.ARMBIAN_URL != '' && !cancelled() }}
         with:
           build_target: armbian
