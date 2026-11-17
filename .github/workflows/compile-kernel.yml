@@ -13,11 +13,12 @@ on:
       kernel_source:
         description: "Select the kernel source"
         required: false
-        default: "ophub"
+        default: "A3tery"
         type: choice
         options:
-          - unifreq
+          - A3tery
           - ophub
+          - unifreq
       kernel_version:
         description: "Select kernel version"
         required: false
@@ -31,6 +32,7 @@ on:
           - 6.6.y
           - 6.12.y
           - 6.18.y
+          - 6.12.y_6.18.y
       kernel_auto:
         description: "Auto use the latest kernel"
         required: false
@@ -77,13 +79,14 @@ on:
           - resolute
           - noble
       kernel_sign:
-        description: "Set the kernel custom signature"
+        description: "Set the kernel custom signature (none = no suffix)"
         required: false
-        default: "-ophub"
+        default: "none"
         type: choice
         options:
-          - -ophub
-          - -yourname
+          - none
+          - -vanilla
+          - -A3tery
 
 env:
   TZ: Etc/UTC
@@ -100,7 +103,14 @@ jobs:
           if [[ "${{ inputs.kernel_version }}" == "all" ]]; then
             MATRIX='{"include":[{"kernel_version":"5.10.y"},{"kernel_version":"5.15.y"},{"kernel_version":"6.1.y"},{"kernel_version":"6.6.y"},{"kernel_version":"6.12.y"},{"kernel_version":"6.18.y"}]}'
           else
-            MATRIX='{"include":[{"kernel_version":"${{ inputs.kernel_version }}"}]}'
+            MATRIX='{"include":['
+            separator=""
+            IFS="_" read -ra kernel_versions <<< "${{ inputs.kernel_version }}"
+            for kernel_version in "${kernel_versions[@]}"; do
+              MATRIX+="${separator}{\"kernel_version\":\"${kernel_version}\"}"
+              separator=","
+            done
+            MATRIX+=']}'
           fi
           echo "matrix=${MATRIX}" >> "${GITHUB_OUTPUT}"
 
@@ -190,7 +200,7 @@ jobs:
             kernel-${{ inputs.kernel_toolchain }}-${{ matrix.kernel_version }}-
 
       - name: Compile the kernel [ ${{ matrix.kernel_version }} ]
-        uses: ophub/amlogic-s9xxx-armbian@main
+        uses: A3tery/amlogic-s9xxx-armbian@main
         if: ${{ steps.disk.outputs.status == 'success' && !cancelled() }}
         with:
           build_target: kernel
