@@ -202,11 +202,11 @@ init_var() {
         echo "DOWNLOAD_TYPE='deb'" >>${rebuild_release_file}
     fi
     # Check kernel signature (empty when the kernel has no signature suffix)
-    [[ -n "${KERNEL_SIGNATURE}" ]] || {
+    if ! grep -q "^KERNEL_SIGNATURE=" ${rebuild_release_file}; then
         KERNEL_SIGNATURE="${kernel_uname#*-}"
         [[ "${KERNEL_SIGNATURE}" == "${kernel_uname}" ]] && KERNEL_SIGNATURE=""
         echo "KERNEL_SIGNATURE='${KERNEL_SIGNATURE}'" >>${rebuild_release_file}
-    }
+    fi
 
     # Set the kernel packages
     declare -A platform_family=(["amlogic"]="meson64" ["rockchip"]="rockchip64" ["allwinner"]="sunxi64")
