@@ -47,7 +47,7 @@ sudo apt-get install -y $(cat compile-kernel/tools/script/ubuntu2404-build-armbi
 | -m | MakePackage | カーネルビルドのパッケージリストを設定します。`all` に設定すると `Image、modules、dtbs` のすべてのファイルを生成し、`dtbs` に設定すると DTB ファイル3つのみ生成します。デフォルト値：`all` |
 | -f | configFlavor | カーネルリポジトリ [ophub/kernel](https://github.com/ophub/kernel/tree/main/kernel-config/release) から設定ファイル `config-*` をローカルの [tools/config](tools/config) ディレクトリにダウンロードする際のフレーバーを指定します。対応するカーネルバージョンの設定ファイルがローカルに既に存在し、このパラメータが未設定の場合はダウンロードをスキップします。選択肢はカーネルリポジトリに存在する[ディレクトリ名](https://github.com/ophub/kernel/tree/main/kernel-config/release)で、例：`stable` / `rk3588` / `rk35xx`。デフォルト値：`stable` |
 | -p | AutoPatch | カスタムカーネルパッチを適用するかどうかを設定します。`true` に設定すると [tools/patch](tools/patch) ディレクトリのカーネルパッチを使用します。詳細は[カーネルパッチの追加方法](../documents/README.ja.md#9-armbian-カーネルのコンパイル)を参照してください。デフォルト値：`false` |
-| -n | CustomName | カーネルのカスタム署名を設定します。例えば `-ophub` に設定すると、生成されるカーネル名は `5.15.100-ophub` になります。署名にスペースを含めないでください。デフォルト値：`-ophub` |
+| -n | CustomName | カーネルのカスタム署名を設定します。例えば `-ophub` に設定すると、生成されるカーネル名は `5.15.100-ophub` になります。署名にスペースを含めないでください。デフォルト値：`none`（サフィックスなし） |
 | -t | Toolchain | カーネルコンパイルのツールチェーンを設定します。選択肢：`clang / gcc / gcc-<version>`。デフォルト値：`gcc` |
 | -z | CompressFormat | カーネル内の initrd で使用する圧縮フォーマットを設定します。選択肢：`xz / gzip / zstd / lzma`。デフォルト値：`xz` |
 | -s | SilentLog | コンパイル時にサイレントモードを有効にしてログ出力を削減するかどうかを設定します。選択肢：`true / false`。デフォルト値：`false` |
@@ -96,11 +96,11 @@ uses: YOUR-REPO/amlogic-s9xxx-armbian@main
 | パラメータ | デフォルト値 | 説明 |
 | --- | --- | --- |
 | build_target | kernel | 固定パラメータ `kernel`。コンパイル対象をカーネルに設定します。 |
-| kernel_source | unifreq | カーネルソースコードリポジトリを指定します。デフォルト値：`unifreq`。機能は `-r` を参照 |
-| kernel_version | 6.12.y_6.18.y | カーネルバージョンを指定します。例：`5.15.100`。機能は `-k` を参照 |
+| kernel_source | A3tery | カーネルソースコードリポジトリを指定します。デフォルト値：`A3tery`。機能は `-r` を参照 |
+| kernel_version | 6.18.y | カーネルバージョンを指定します。例：`5.15.100`。機能は `-k` を参照 |
 | kernel_auto | true | 同系列の最新バージョンカーネルを自動採用するかどうかを設定します。デフォルト値：`true`。機能は `-a` を参照 |
 | kernel_package | all | カーネルビルドのパッケージリストを設定します。デフォルト値：`all`。機能は `-m` を参照 |
-| kernel_sign | -ophub | カーネルのカスタム署名を設定します。デフォルト値：`-ophub`。機能は `-n` を参照 |
+| kernel_sign | none | カーネルのカスタム署名を設定します。デフォルト値：`none`（サフィックスなし）。機能は `-n` を参照 |
 | kernel_toolchain | gcc | カーネルコンパイルのツールチェーンを設定します。デフォルト値：`gcc`。機能は `-t` を参照 |
 | config_flavor | stable | カーネルリポジトリ [ophub/kernel](https://github.com/ophub/kernel/tree/main/kernel-config/release) から設定ファイル `config-*` をローカルの [tools/config](tools/config) ディレクトリにダウンロードする際のフレーバーを指定します。対応するカーネルバージョンの設定ファイルがローカルに既に存在し、このパラメータが未設定の場合はダウンロードをスキップします。選択肢はカーネルリポジトリに存在する[ディレクトリ名](https://github.com/ophub/kernel/tree/main/kernel-config/release)で、例：`stable` / `rk3588` / `rk35xx`。デフォルト値：`stable`。`kernel_config` パラメータも同時に設定した場合、最終的には `config_flavor` で指定した設定ファイルが優先されます。この2つのパラメータは排他的で、どちらか一方を選択できます：前者で [ophub/kernel](https://github.com/ophub/kernel/tree/main/kernel-config/release) のカーネル設定ファイルを使用するか、後者で独自リポジトリの設定ファイルを使用します。機能は `-f` を参照 |
 | kernel_config | false | デフォルトでは [tools/config](tools/config) ディレクトリの設定テンプレートを使用します。リポジトリ内のカーネル設定ファイルが保存されているディレクトリを指定できます。例：`kernel/config_path`。このディレクトリの設定テンプレートはカーネルメジャーバージョンで命名する必要があります。例：`config-5.10`、`config-5.15` など。 |

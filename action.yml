@@ -52,7 +52,7 @@ inputs:
   kernel_source:
     description: "Select the kernel source code"
     required: false
-    default: "unifreq"
+    default: "A3tery"
   kernel_version:
     description: "Select kernel version"
     required: false
@@ -66,9 +66,9 @@ inputs:
     required: false
     default: "all"
   kernel_sign:
-    description: "Set the kernel custom signature"
+    description: "Set the kernel custom signature (none = no suffix)"
     required: false
-    default: "-ophub"
+    default: "none"
   kernel_toolchain:
     description: "Select the compilation toolchain"
     required: false

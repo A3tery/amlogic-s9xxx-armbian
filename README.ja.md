@@ -121,7 +121,7 @@ Armbianシステムにログインし、以下のコマンドを入力します�
 armbian-software
 ```
 
-`armbian-software -u`コマンドでローカルのソフトウェアセンターリストを更新できます。[Issues](https://github.com/ophub/amlogic-s9xxx-armbian/issues)でのユーザーフィードバックに基づき、よく使われる[ソフトウェア](build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software/software-list.conf)がワンクリックでのインストール/更新/アンインストールに対応するよう段階的に統合されています。`Dockerイメージ`、`デスクトップソフトウェア`、`アプリケーションサービス`などが含まれます。[詳細な説明](documents/armbian_software.md)をご覧ください。
+`armbian-software -u`コマンドでローカルのソフトウェアセンターリストを更新できます。[Issues](https://github.com/ophub/amlogic-s9xxx-armbian/issues)でのユーザーフィードバックに基づき、よく使われる[ソフトウェア](build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software/software-list.conf)がワンクリックでのインストール/更新/アンインストールに対応するよう段階的に統合されています。`Dockerイメージ`、`デスクトップソフトウェア`、`アプリケーションサービス`などが含まれます。[詳細な説明](documents/armbian_software.md)をご覧ください。
 
 - ### Armbian設定の変更
 

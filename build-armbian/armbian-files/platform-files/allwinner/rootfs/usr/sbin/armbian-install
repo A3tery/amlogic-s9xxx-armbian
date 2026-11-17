@@ -27,7 +27,7 @@
 #==================================== Set default parameters ====================================
 #
 # Add custom Armbian configuration information
-ophub_release_file="/etc/ophub-release"
+rebuild_release_file="/etc/rebuild-release"
 # Set the installation file preprocessing directory
 tmp_path="/ddbr"
 
@@ -75,14 +75,14 @@ init_var() {
     echo -e "${STEPS} Initializing the environment..."
 
     # View device configuration information
-    [[ -s "${ophub_release_file}" ]] || error_msg "[ ${ophub_release_file} ] file is missing!"
-    PLATFORM="$(cat "${ophub_release_file}" | grep -E "^PLATFORM" | awk -F"'" '{print $2}')"
-    FDTFILE="$(cat "${ophub_release_file}" | grep -E "^FDTFILE" | awk -F"'" '{print $2}')"
-    FAMILY="$(cat "${ophub_release_file}" | grep -E "^FAMILY" | awk -F"'" '{print $2}')"
-    MAINLINE_UBOOT="$(cat "${ophub_release_file}" | grep -E "^MAINLINE_UBOOT" | awk -F"'" '{print $2}')"
-    BOOTLOADER_IMG="$(cat "${ophub_release_file}" | grep -E "^BOOTLOADER_IMG" | awk -F"'" '{print $2}')"
+    [[ -s "${rebuild_release_file}" ]] || error_msg "[ ${rebuild_release_file} ] file is missing!"
+    PLATFORM="$(cat "${rebuild_release_file}" | grep -E "^PLATFORM" | awk -F"'" '{print $2}')"
+    FDTFILE="$(cat "${rebuild_release_file}" | grep -E "^FDTFILE" | awk -F"'" '{print $2}')"
+    FAMILY="$(cat "${rebuild_release_file}" | grep -E "^FAMILY" | awk -F"'" '{print $2}')"
+    MAINLINE_UBOOT="$(cat "${rebuild_release_file}" | grep -E "^MAINLINE_UBOOT" | awk -F"'" '{print $2}')"
+    BOOTLOADER_IMG="$(cat "${rebuild_release_file}" | grep -E "^BOOTLOADER_IMG" | awk -F"'" '{print $2}')"
     [[ -n "${PLATFORM}" && -n "${FDTFILE}" && -n "${FAMILY}" && -n "${BOOTLOADER_IMG}" ]] || {
-        error_msg "Required configuration is missing in [ ${ophub_release_file} ]."
+        error_msg "Required configuration is missing in [ ${rebuild_release_file} ]."
     }
 
     # Display device configuration
@@ -339,10 +339,10 @@ tmpfs                  /tmp     tmpfs                  defaults,nosuid          
 EOF
 
     echo -e "${INFO} Update parameters related to the releases file."
-    ophub_release_file="${DIR_INSTALL}${ophub_release_file}"
-    sed -i "s|^ROOTFS_TYPE=.*|ROOTFS_TYPE='${file_system_type}'|g" ${ophub_release_file}
-    sed -i "s|^BOOT_CONF=.*|BOOT_CONF='${BOOT_CONF}'|g" ${ophub_release_file}
-    sed -i "s|^DISK_TYPE=.*|DISK_TYPE='emmc'|g" ${ophub_release_file}
+    rebuild_release_file="${DIR_INSTALL}${rebuild_release_file}"
+    sed -i "s|^ROOTFS_TYPE=.*|ROOTFS_TYPE='${file_system_type}'|g" ${rebuild_release_file}
+    sed -i "s|^BOOT_CONF=.*|BOOT_CONF='${BOOT_CONF}'|g" ${rebuild_release_file}
+    sed -i "s|^DISK_TYPE=.*|DISK_TYPE='emmc'|g" ${rebuild_release_file}
 
     # Remove useless scripts
     rm -f ${DIR_INSTALL}/usr/sbin/armbian-tf

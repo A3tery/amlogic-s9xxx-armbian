@@ -47,7 +47,7 @@ You can compile the kernel directly in an [Armbian](https://github.com/ophub/aml
 | -m | MakePackage | Sets the package list for building the kernel. When set to `all`, all files including `Image, modules, dtbs` are built. When set to `dtbs`, only the 3 DTB files are generated. Default: `all` |
 | -f | configFlavor | Specifies which configuration file `config-*` to download from the kernel repository [ophub/kernel](https://github.com/ophub/kernel/tree/main/kernel-config/release) to the local [tools/config](tools/config) directory. If a configuration file matching the kernel version already exists locally and this parameter is not set, the download is skipped. Available options correspond to the [directory names](https://github.com/ophub/kernel/tree/main/kernel-config/release) in the kernel repository, e.g., `stable` / `rk3588` / `rk35xx`. Default: `stable`. |
 | -p | AutoPatch | Sets whether to apply custom kernel patches. When set to `true`, patches from the [tools/patch](tools/patch) directory are applied. For details, refer to [how to add kernel patches](../documents/README.md#9-compiling-armbian-kernel). Default: `false` |
-| -n | CustomName | Sets the custom signature appended to the kernel version. For example, setting `-ophub` produces a kernel named `5.15.100-ophub`. Do not include spaces in the custom signature. Default: `-ophub` |
+| -n | CustomName | Sets the custom signature appended to the kernel version. For example, setting `-ophub` produces a kernel named `5.15.100-ophub`. Do not include spaces in the custom signature. Default: `none` (no suffix) |
 | -t | Toolchain | Sets the toolchain for kernel compilation. Options: `clang / gcc / gcc-<version>`. Default: `gcc` |
 | -z | CompressFormat | Sets the compression format for initrd in the kernel. Options: `xz / gzip / zstd / lzma`. Default: `xz` |
 | -s | SilentLog | Sets whether to enable silent mode to reduce log output during compilation. Options: `true / false`. Default: `false` |
@@ -96,11 +96,11 @@ These parameters correspond to the `local compilation commands`. Refer to the de
 | Parameter | Default Value | Description |
 | --- | --- | --- |
 | build_target | kernel | Fixed parameter `kernel`. Sets the compilation target to the kernel. |
-| kernel_source | unifreq | Specifies the kernel source code repository for compilation. Default: `unifreq`. Refer to `-r` for details. |
-| kernel_version | 6.12.y_6.18.y | Specifies the kernel version, e.g., `5.15.100`. Refer to `-k` for details. |
+| kernel_source | A3tery | Specifies the kernel source code repository for compilation. Default: `A3tery`. Refer to `-r` for details. |
+| kernel_version | 6.18.y | Specifies the kernel version, e.g., `5.15.100`. Refer to `-k` for details. |
 | kernel_auto | true | Sets whether to automatically adopt the latest version within the same kernel series. Default: `true`. Refer to `-a` for details. |
 | kernel_package | all | Sets the package list for building the kernel. Default: `all`. Refer to `-m` for details. |
-| kernel_sign | -ophub | Sets the custom signature for the kernel. Default: `-ophub`. Refer to `-n` for details. |
+| kernel_sign | none | Sets the custom signature for the kernel. Default: `none` (no suffix). Refer to `-n` for details. |
 | kernel_toolchain | gcc | Sets the toolchain for kernel compilation. Default: `gcc`. Refer to `-t` for details. |
 | config_flavor | stable | Specifies which configuration file `config-*` to download from the kernel repository [ophub/kernel](https://github.com/ophub/kernel/tree/main/kernel-config/release) to the local [tools/config](tools/config) directory. If a configuration file matching the kernel version already exists locally and this parameter is not set, the download is skipped. Available options correspond to the [directory names](https://github.com/ophub/kernel/tree/main/kernel-config/release) in the kernel repository, e.g., `stable` / `rk3588` / `rk35xx`. Default: `stable`. If `kernel_config` is also set, the configuration file specified by `config_flavor` takes precedence. These two parameters are mutually exclusive: use one to select kernel configuration files from [ophub/kernel](https://github.com/ophub/kernel/tree/main/kernel-config/release), or the other to use files from your own repository. Refer to `-f` for details. |
 | kernel_config | false | By default, uses the configuration templates in the [tools/config](tools/config) directory. You can specify the directory in your repository containing kernel configuration files, e.g., `kernel/config_path`. The configuration files in that directory must follow the naming convention based on major kernel version, e.g., `config-5.10`, `config-5.15`, etc. |

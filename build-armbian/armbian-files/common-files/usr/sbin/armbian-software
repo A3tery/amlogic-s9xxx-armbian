@@ -29,14 +29,14 @@
 #=============================== Set make environment variables ===============================
 #
 # Related file storage path
-software_path="/usr/share/ophub/armbian-software"
+software_path="/usr/share/rebuild/armbian-software"
 software_conf="${software_path}/software-list.conf"
-ophub_release_file="/etc/ophub-release"
+rebuild_release_file="/etc/rebuild-release"
 arch_info="$(arch)"
 #
 # The software management scripts download repository
-script_repo="https://github.com/ophub/amlogic-s9xxx-armbian.git"
-script_dir="build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software"
+script_repo="https://github.com/A3tery/amlogic-s9xxx-armbian.git"
+script_dir="build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software"
 #
 # Set font color
 STEPS="[\033[95m STEPS \033[0m]"
@@ -55,15 +55,15 @@ error_msg() {
 
 # Check system release information
 check_release() {
-    if [[ -f "${ophub_release_file}" ]]; then
-        source "${ophub_release_file}" 2>/dev/null
+    if [[ -f "${rebuild_release_file}" ]]; then
+        source "${rebuild_release_file}" 2>/dev/null
         VERSION_CODEID="${VERSION_CODEID}"
         VERSION_CODENAME="${VERSION_CODENAME}"
     else
-        error_msg "Missing release file: [ ${ophub_release_file} ]"
+        error_msg "Missing release file: [ ${rebuild_release_file} ]"
     fi
 
-    [[ -n "${VERSION_CODEID}" && -n "${VERSION_CODENAME}" ]] || error_msg "Incomplete release info in [ ${ophub_release_file} ]"
+    [[ -n "${VERSION_CODEID}" && -n "${VERSION_CODENAME}" ]] || error_msg "Incomplete release info in [ ${rebuild_release_file} ]"
 }
 
 # Check and install required dependencies

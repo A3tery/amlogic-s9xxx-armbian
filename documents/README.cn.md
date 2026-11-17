@@ -623,7 +623,7 @@ armbian-update -s
 - `deb` 格式更新所需的 4 个文件为：`linux-image-xxx.deb`，`linux-dtb-xxx.deb`，`linux-headers-xxx.deb`，`linux-libc-dev-xxx.deb`。
 - 无需移除其他无关的内核文件，即使它们同时存在也不会影响更新，系统能够精准识别所需文件。在设备支持的内核范围内，您可以自由切换版本，例如从 6.6.12 内核变更为 5.15.50 内核。
 
-通过 `-r`/`-u`/`-b`/`-d` 等参数设置的自定义选项，可固化至配置文件 `/etc/ophub-release` 的相关参数中，无需每次手动输入。对应设置为：
+通过 `-r`/`-u`/`-b`/`-d` 等参数设置的自定义选项，可固化至配置文件 `/etc/rebuild-release` 的相关参数中，无需每次手动输入。对应设置为：
 
 ```shell
 # 自定义修改参数的赋值
@@ -641,7 +641,7 @@ armbian-update -s
 armbian-software
 ```
 
-使用 `armbian-software -u` 命令可更新本地软件中心列表。根据用户在 [Issue](https://github.com/ophub/amlogic-s9xxx-armbian/issues) 中的反馈，逐步整合常用[软件](../build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software/software-list.conf)，支持一键安装、更新和卸载。包括 `docker 镜像`、`桌面软件`、`应用服务` 等。详见更多[说明](armbian_software.md)。
+使用 `armbian-software -u` 命令可更新本地软件中心列表。根据用户在 [Issue](https://github.com/ophub/amlogic-s9xxx-armbian/issues) 中的反馈，逐步整合常用[软件](../build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software/software-list.conf)，支持一键安装、更新和卸载。包括 `docker 镜像`、`桌面软件`、`应用服务` 等。详见更多[说明](armbian_software.md)。
 
 根据所在国家或地区，使用 `armbian-apt` 命令选择合适的软件源以提高下载速度。例如，选择中国的清华大学源：
 

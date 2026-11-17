@@ -67,7 +67,7 @@ modules_backup_path="${tmp_backup_path}/modules"
 arch_info="$(uname -m)"
 host_release="$(cat /etc/os-release 2>/dev/null | grep '^VERSION_CODENAME=.*' | cut -d"=" -f2)"
 initramfs_conf="/etc/initramfs-tools/update-initramfs.conf"
-ophub_release_file="/etc/ophub-release"
+rebuild_release_file="/etc/rebuild-release"
 
 # Set the default for downloading kernel sources from github.com
 repo_owner="unifreq"
@@ -78,9 +78,9 @@ all_kernel=("5.10.y" "5.15.y" "6.1.y" "6.6.y" "6.12.y" "6.18.y")
 auto_kernel="true"
 # Set whether to apply custom kernel patches, options: [ true / false ]
 auto_patch="false"
-# Set custom signature for the kernel
-custom_name="-ophub"
-pkg_maintainer="ophub <noreply@ophub.org>"
+# Set custom signature for the kernel (empty = no suffix)
+custom_name=""
+pkg_maintainer="A3tery <A3tery@users.noreply.github.com>"
 # Set the kernel compile object, options: [ dtbs / all ]
 package_list="all"
 # Set the compression format, options: [ gzip / lzma / xz / zstd ]
@@ -193,8 +193,8 @@ init_var() {
         -n | --customName)
             if [[ -n "${2}" ]]; then
                 custom_name="${2// /}"
-                [[ -n "${custom_name}" ]] || custom_name="-ophub"
-                [[ "${custom_name:0:1}" != "-" ]] && custom_name="-${custom_name}"
+                [[ "${custom_name,,}" == "none" ]] && custom_name=""
+                [[ -n "${custom_name}" && "${custom_name:0:1}" != "-" ]] && custom_name="-${custom_name}"
                 shift 2
             else
                 error_msg "Invalid -n parameter [ ${2} ]!"
@@ -312,7 +312,7 @@ init_var() {
     export LOCALVERSION="${custom_name}"
 
     # Get Armbian PLATFORM value
-    PLATFORM="$(cat ${ophub_release_file} 2>/dev/null | grep -E "^PLATFORM=.*" | cut -d"'" -f2)"
+    PLATFORM="$(cat ${rebuild_release_file} 2>/dev/null | grep -E "^PLATFORM=.*" | cut -d"'" -f2)"
     [[ -n "${PLATFORM}" ]] && echo -e "${INFO} Armbian PLATFORM: [ ${PLATFORM} ]"
 }
 
@@ -978,10 +978,10 @@ EOF
 #!/bin/bash
 set -e
 
-# Read platform info from ophub-release
-ophub_release_file="/etc/ophub-release"
-if [[ -f "${ophub_release_file}" ]]; then
-    source "${ophub_release_file}"
+# Read platform info from rebuild-release
+rebuild_release_file="/etc/rebuild-release"
+if [[ -f "${rebuild_release_file}" ]]; then
+    source "${rebuild_release_file}"
 fi
 
 cd /boot
@@ -1450,7 +1450,8 @@ compile_selection() {
     cd ${output_path}
 
     # Rename kernel version directory and deb package directory if the code branch is different from the repo branch
-    if [[ "${code_branch}" != "${repo_branch}" ]]; then
+    # Skip renaming when there is no custom signature, otherwise the target equals the version root directory
+    if [[ "${code_branch}" != "${repo_branch}" && -n "${custom_name}" ]]; then
         # Rename kernel version directory
         rm -rf ${kernel_version}${custom_name}
         mv -f ${kernel_version} ${kernel_version}${custom_name}
@@ -1564,7 +1565,7 @@ echo -e "${INFO} Kernel branch: [ ${code_branch} ]"
 echo -e "${INFO} Kernel patch: [ ${auto_patch} ]"
 echo -e "${INFO} Kernel arch: [ ${SRC_ARCH} ]"
 echo -e "${INFO} Kernel package: [ ${package_list} ]"
-echo -e "${INFO} Kernel signature: [ ${custom_name} ]"
+echo -e "${INFO} Kernel signature: [ ${custom_name:-none} ]"
 echo -e "${INFO} Latest kernel version: [ ${auto_kernel} ]"
 echo -e "${INFO} Kernel initrd compress: [ ${compress_format} ]"
 echo -e "${INFO} Ccache clear: [ ${ccache_clear} ]"

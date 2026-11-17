@@ -21,7 +21,7 @@ set +euo pipefail
 trap 'exit 0' EXIT
 
 # Custom Service Log - all script output will be logged here
-custom_log="/tmp/ophub_start_service.log"
+custom_log="/tmp/rebuild_start_service.log"
 
 # A helper function for logging with a timestamp
 log_message() {
@@ -36,11 +36,11 @@ dmesg -n 1 >/dev/null 2>&1 || true
 log_message "Kernel console logging level set to 1 (Panic only)."
 
 # Search for the FDTFILE file (only the basename of the .dtb is needed)
-ophub_release_file="/etc/ophub-release"
+rebuild_release_file="/etc/rebuild-release"
 FDTFILE=""
-# 1) /etc/ophub-release : FDTFILE='xxx.dtb'
-[[ -f "${ophub_release_file}" ]] &&
-    FDTFILE="$(awk -F"'" '/^FDTFILE=/ {print $2; exit}' "${ophub_release_file}" 2>/dev/null)"
+# 1) /etc/rebuild-release : FDTFILE='xxx.dtb'
+[[ -f "${rebuild_release_file}" ]] &&
+    FDTFILE="$(awk -F"'" '/^FDTFILE=/ {print $2; exit}' "${rebuild_release_file}" 2>/dev/null)"
 # 2) /boot/uEnv.txt : FDT=/dtb/.../xxx.dtb  (or FDT=xxx.dtb)
 [[ -z "${FDTFILE}" && -f "/boot/uEnv.txt" ]] &&
     FDTFILE="$(grep -E '^FDT=.*\.dtb$' /boot/uEnv.txt 2>/dev/null | head -n1 | sed -E 's#^FDT=##; s#.*/##')"
@@ -55,18 +55,18 @@ log_message "Detected FDT file: ${FDTFILE:-not found}"
 # Device-Specific Services
 
 # Add rknpu module to the system module load list
-ophub_load_conf="/etc/modules-load.d/ophub-load-list.conf"
-[[ -f "${ophub_load_conf}" ]] || touch "${ophub_load_conf}"
+rebuild_load_conf="/etc/modules-load.d/rebuild-load-list.conf"
+[[ -f "${rebuild_load_conf}" ]] || touch "${rebuild_load_conf}"
 if modinfo rknpu >/dev/null 2>&1; then
-    grep -q -x "rknpu" "${ophub_load_conf}" 2>/dev/null || echo "rknpu" >>"${ophub_load_conf}"
+    grep -q -x "rknpu" "${rebuild_load_conf}" 2>/dev/null || echo "rknpu" >>"${rebuild_load_conf}"
 else
-    grep -q -x "rknpu" "${ophub_load_conf}" 2>/dev/null && sed -i '/^rknpu$/d' "${ophub_load_conf}"
+    grep -q -x "rknpu" "${rebuild_load_conf}" 2>/dev/null && sed -i '/^rknpu$/d' "${rebuild_load_conf}"
 fi
 log_message "Adjusted the rknpu module in the system module load list."
 
 # For Tencent Aurora 3Pro (s905x3-b) box: Load Bluetooth module
 if [[ "${FDTFILE}" == "meson-sm1-skyworth-lb2004-a4091.dtb" ]]; then
-    grep -q -x "btmtksdio" "${ophub_load_conf}" 2>/dev/null || echo "btmtksdio" >>"${ophub_load_conf}"
+    grep -q -x "btmtksdio" "${rebuild_load_conf}" 2>/dev/null || echo "btmtksdio" >>"${rebuild_load_conf}"
     log_message "Attempted to load btmtksdio module for Tencent-Aurora-3Pro."
 fi
 

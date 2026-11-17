@@ -2,7 +2,7 @@
 
 [English Instructions](#armbian-software-center) | [中文说明](#armbian-软件中心) | [日本語説明](#armbian-ソフトウェアセンター)
 
-Based on user feedback and requests in [Issues](https://github.com/ophub/amlogic-s9xxx-armbian/issues), commonly used [software](../build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software/software-list.conf) has been gradually integrated to provide one-click install/update/uninstall operations. This includes `Docker images`, `desktop software`, `application services`, and more.
+Based on user feedback and requests in [Issues](https://github.com/ophub/amlogic-s9xxx-armbian/issues), commonly used [software](../build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software/software-list.conf) has been gradually integrated to provide one-click install/update/uninstall operations. This includes `Docker images`, `desktop software`, `application services`, and more.
 
 ## Software Introduction
 
@@ -92,7 +92,7 @@ ID    NAME                STATE           MANAGE
 
 ## Software Center Development Guide
 
-The software center scripts and commands are stored in the [/usr/share/ophub/armbian-software](../build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software) directory. Use `armbian-software -u` to sync and download this directory to the local system, updating the software center list. Files prefixed with numbers are `one-click installation scripts` for the corresponding software. [software-command.sh](../build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software/software-command.sh) is the `unified command file` for installing/updating/removing software. [software-list.conf](../build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software/software-list.conf) is the software list configuration file, described as follows:
+The software center scripts and commands are stored in the [/usr/share/rebuild/armbian-software](../build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software) directory. Use `armbian-software -u` to sync and download this directory to the local system, updating the software center list. Files prefixed with numbers are `one-click installation scripts` for the corresponding software. [software-command.sh](../build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software/software-command.sh) is the `unified command file` for installing/updating/removing software. [software-list.conf](../build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software/software-list.conf) is the software list configuration file, described as follows:
 
 ```yaml
 # 1.ID     2.Software Name     3.AuthMethod@Package      4.Execute Selection     5.Supported Release
@@ -119,7 +119,7 @@ Contributions of additional software are welcome. Feel free to submit requests i
 
 # Armbian 软件中心
 
-根据用户在 [Issues](https://github.com/ophub/amlogic-s9xxx-armbian/issues) 中的反馈需求，已逐步整合常用[软件](../build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software/software-list.conf)，实现一键安装/更新/卸载等快捷操作。包括 `Docker 镜像`、`桌面软件`、`应用服务` 等。
+根据用户在 [Issues](https://github.com/ophub/amlogic-s9xxx-armbian/issues) 中的反馈需求，已逐步整合常用[软件](../build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software/software-list.conf)，实现一键安装/更新/卸载等快捷操作。包括 `Docker 镜像`、`桌面软件`、`应用服务` 等。
 
 ## 软件介绍
 
@@ -209,7 +209,7 @@ ID    NAME                STATE           MANAGE
 
 ## 软件中心开发说明
 
-软件中心的脚本和命令集中存放在 [/usr/share/ophub/armbian-software](../build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software) 目录下。使用 `armbian-software -u` 命令可同步下载此目录至本地，更新本地软件中心列表。其中以数字开头的文件是对应软件的`一键安装脚本`。[software-command.sh](../build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software/software-command.sh) 是用于安装/更新/删除操作的`统一指令文件`。[software-list.conf](../build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software/software-list.conf) 是软件列表配置文件，说明如下：
+软件中心的脚本和命令集中存放在 [/usr/share/rebuild/armbian-software](../build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software) 目录下。使用 `armbian-software -u` 命令可同步下载此目录至本地，更新本地软件中心列表。其中以数字开头的文件是对应软件的`一键安装脚本`。[software-command.sh](../build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software/software-command.sh) 是用于安装/更新/删除操作的`统一指令文件`。[software-list.conf](../build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software/software-list.conf) 是软件列表配置文件，说明如下：
 
 ```yaml
 # 1.ID     2.Software Name     3.AuthMethod@Package      4.Execute Selection     5.Supported Release
@@ -236,7 +236,7 @@ ID    NAME                STATE           MANAGE
 
 # Armbian ソフトウェアセンター
 
-ユーザーからの [Issues](https://github.com/ophub/amlogic-s9xxx-armbian/issues) でのフィードバックやリクエストに基づき、よく使われる[ソフトウェア](../build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software/software-list.conf)を順次統合し、ワンクリックでのインストール/更新/アンインストールなどの操作を実現しています。`Docker イメージ`、`デスクトップソフトウェア`、`アプリケーションサービス`などが含まれます。
+ユーザーからの [Issues](https://github.com/ophub/amlogic-s9xxx-armbian/issues) でのフィードバックやリクエストに基づき、よく使われる[ソフトウェア](../build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software/software-list.conf)を順次統合し、ワンクリックでのインストール/更新/アンインストールなどの操作を実現しています。`Docker イメージ`、`デスクトップソフトウェア`、`アプリケーションサービス`などが含まれます。
 
 ## ソフトウェア紹介
 
@@ -326,7 +326,7 @@ ID    NAME                STATE           MANAGE
 
 ## ソフトウェアセンター開発ガイド
 
-ソフトウェアセンターのスクリプトとコマンドは [/usr/share/ophub/armbian-software](../build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software) ディレクトリに集中して保存されています。`armbian-software -u` コマンドでこのディレクトリをローカルに同期ダウンロードし、ソフトウェアセンターリストを更新できます。数字で始まるファイルは対応するソフトウェアの`ワンクリックインストールスクリプト`です。[software-command.sh](../build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software/software-command.sh) はインストール/更新/削除操作のための`統一コマンドファイル`です。[software-list.conf](../build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software/software-list.conf) はソフトウェアリスト設定ファイルで、説明は以下の通りです：
+ソフトウェアセンターのスクリプトとコマンドは [/usr/share/rebuild/armbian-software](../build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software) ディレクトリに集中して保存されています。`armbian-software -u` コマンドでこのディレクトリをローカルに同期ダウンロードし、ソフトウェアセンターリストを更新できます。数字で始まるファイルは対応するソフトウェアの`ワンクリックインストールスクリプト`です。[software-command.sh](../build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software/software-command.sh) はインストール/更新/削除操作のための`統一コマンドファイル`です。[software-list.conf](../build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software/software-list.conf) はソフトウェアリスト設定ファイルで、説明は以下の通りです：
 
 ```yaml
 # 1.ID     2.Software Name     3.AuthMethod@Package      4.Execute Selection     5.Supported Release

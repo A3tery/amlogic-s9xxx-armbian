@@ -36,7 +36,6 @@ kernel_patch_path="${current_path}/compile-kernel/tools/patch"
 docker_hostpath="${PWD}"
 docker_image="ophub/armbian-resolute:arm64"
 docker_container="armbian-ophub"
-docker_script="/usr/sbin/armbian-kernel"
 
 # Get host architecture and release info
 arch_info="$(uname -m)"
@@ -100,6 +99,13 @@ install_docker_engine() {
 launch_docker_container() {
     echo -e "${STEPS} Launching the Armbian Docker container..."
 
+    # Seed the mounted compile directory with this repository's scripts
+    compile_path="${docker_hostpath}/compile-kernel"
+    [[ -d "${compile_path}" ]] || mkdir -p "${compile_path}"
+    if [[ "${docker_hostpath}" != "${current_path}" ]]; then
+        cp -rf "${current_path}/compile-kernel/." "${compile_path}/"
+    fi
+
     # Check if the Armbian Docker container is running
     if [[ "$(docker ps -q -f name=${docker_container})" ]]; then
         echo -e "${INFO} The docker container [ ${docker_container} ] is running."
@@ -122,9 +128,7 @@ launch_docker_container() {
 
         # Set Docker mount paths
         echo -e "${INFO} Setting up Docker host mount paths..."
-        compile_path="${docker_hostpath}/compile-kernel"
         ccache_path="${docker_hostpath}/ccache"
-        [[ -d "${compile_path}" ]] || mkdir -p ${compile_path}
         [[ -d "${ccache_path}" ]] || mkdir -p ${ccache_path}
 
         # Pull the Armbian Docker image. Use --restart=no because this is a one-shot
@@ -158,8 +162,15 @@ configure_and_compile() {
         docker restart ${docker_container} >/dev/null && sleep 5
     fi
 
-    echo -e "${INFO} Syncing scripts in Docker container..."
-    docker exec -i "${docker_container}" bash "${docker_script}" -u
+    # Install build dependencies without pulling any upstream scripts
+    echo -e "${INFO} Installing kernel build dependencies in Docker container..."
+    docker exec -i "${docker_container}" bash -c \
+        "apt-get -qq update && apt-get -qq install -y \$(cat /opt/kernel/compile-kernel/tools/script/armbian-compile-kernel-depends)"
+
+    # Use this repository's compile script as the container entry point
+    echo -e "${INFO} Installing the local compile script in Docker container..."
+    docker cp "${compile_path}/tools/script/armbian_compile_kernel.sh" "${docker_container}":/opt/kernel/recompile
+    docker exec -i "${docker_container}" chmod +x /opt/kernel/recompile
 
     echo -e "${INFO} Injecting custom configs into Docker container..."
     [[ -d "${config_path}" ]] && docker cp ${config_path}/. "${docker_container}":/opt/kernel/compile-kernel/tools/config/
@@ -170,7 +181,8 @@ configure_and_compile() {
     docker exec -i "${docker_container}" ls -Alh /opt/kernel/compile-kernel/tools/patch/ || true
 
     echo -e "${INFO} Compiling the kernel inside the Docker container..."
-    docker exec -i "${docker_container}" bash "${docker_script}" "${@}"
+    docker exec -i -w /opt/kernel "${docker_container}" bash /opt/kernel/recompile "${@}"
+    [[ "${?}" -eq 0 ]] || error_msg "Kernel compilation failed in the Docker container."
 }
 
 # Show welcome message

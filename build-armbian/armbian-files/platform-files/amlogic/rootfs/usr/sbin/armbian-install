@@ -26,7 +26,7 @@
 #======================================== Functions list ========================================
 #
 # error_msg          : Output error message and abort execution
-# check_release_file : Check if the ophub release file exists and source it
+# check_release_file : Check if the rebuild release file exists and source it
 # check_depends      : Check and install required dependencies
 # init_var           : Initialize all runtime variables and parse options
 # show_aml_model     : Display the list of supported Amlogic devices
@@ -50,7 +50,7 @@ without_ampart=("s905x")
 # Set install list profile
 model_conf="/etc/model_database.conf"
 # Add custom armbian firmware information
-ophub_release_file="/etc/ophub-release"
+rebuild_release_file="/etc/rebuild-release"
 # Set the installation file preprocessing directory
 tmp_path="/ddbr"
 
@@ -69,10 +69,10 @@ error_msg() {
     exit 1
 }
 
-# Check if the ophub release file exists
+# Check if the rebuild release file exists
 check_release_file() {
-    [[ -s "${ophub_release_file}" ]] || error_msg "[ ${ophub_release_file} ] file is missing!"
-    source "${ophub_release_file}"
+    [[ -s "${rebuild_release_file}" ]] || error_msg "[ ${rebuild_release_file} ] file is missing!"
+    source "${rebuild_release_file}"
     [[ " ${without_ampart[*]} " =~ " ${SOC} " ]] && default_ampart="no"
 }
 
@@ -582,19 +582,19 @@ tmpfs                  /tmp     tmpfs                  defaults,nosuid          
 EOF
 
     echo -e "${INFO} Update parameters related to the releases file."
-    ophub_release_file="${DIR_INSTALL}${ophub_release_file}"
-    sed -i "s|^MODEL_ID=.*|MODEL_ID='${boxid}'|g" ${ophub_release_file}
-    sed -i "s|^MODEL_NAME=.*|MODEL_NAME='${MODEL_NAME}'|g" ${ophub_release_file}
-    sed -i "s|^SOC=.*|SOC='${AMLOGIC_SOC}'|g" ${ophub_release_file}
-    sed -i "s|^FDTFILE=.*|FDTFILE='${FDTFILE}'|g" ${ophub_release_file}
-    sed -i "s|^MAINLINE_UBOOT=.*|MAINLINE_UBOOT='/usr/lib/u-boot/${MAINLINE_UBOOT}'|g" ${ophub_release_file}
-    sed -i "s|^BOOTLOADER_IMG=.*|BOOTLOADER_IMG='/usr/lib/u-boot/${BOOTLOADER_IMG}'|g" ${ophub_release_file}
-    sed -i "s|^UBOOT_OVERLOAD=.*|UBOOT_OVERLOAD='${UBOOT_OVERLOAD}'|g" ${ophub_release_file}
-    sed -i "s|^ROOTFS_TYPE=.*|ROOTFS_TYPE='${file_system_type}'|g" ${ophub_release_file}
-    sed -i "s|^BOOT_CONF=.*|BOOT_CONF='${BOOT_CONF}'|g" ${ophub_release_file}
-    sed -i "s|^DISK_TYPE=.*|DISK_TYPE='emmc'|g" ${ophub_release_file}
-    sed -i "s|^MLUBOOT_STATUS=.*|MLUBOOT_STATUS='${auto_mainline_uboot}'|g" ${ophub_release_file}
-    sed -i "s|^AMPART_STATUS=.*|AMPART_STATUS='${AMPART_STATUS}'|g" ${ophub_release_file}
+    rebuild_release_file="${DIR_INSTALL}${rebuild_release_file}"
+    sed -i "s|^MODEL_ID=.*|MODEL_ID='${boxid}'|g" ${rebuild_release_file}
+    sed -i "s|^MODEL_NAME=.*|MODEL_NAME='${MODEL_NAME}'|g" ${rebuild_release_file}
+    sed -i "s|^SOC=.*|SOC='${AMLOGIC_SOC}'|g" ${rebuild_release_file}
+    sed -i "s|^FDTFILE=.*|FDTFILE='${FDTFILE}'|g" ${rebuild_release_file}
+    sed -i "s|^MAINLINE_UBOOT=.*|MAINLINE_UBOOT='/usr/lib/u-boot/${MAINLINE_UBOOT}'|g" ${rebuild_release_file}
+    sed -i "s|^BOOTLOADER_IMG=.*|BOOTLOADER_IMG='/usr/lib/u-boot/${BOOTLOADER_IMG}'|g" ${rebuild_release_file}
+    sed -i "s|^UBOOT_OVERLOAD=.*|UBOOT_OVERLOAD='${UBOOT_OVERLOAD}'|g" ${rebuild_release_file}
+    sed -i "s|^ROOTFS_TYPE=.*|ROOTFS_TYPE='${file_system_type}'|g" ${rebuild_release_file}
+    sed -i "s|^BOOT_CONF=.*|BOOT_CONF='${BOOT_CONF}'|g" ${rebuild_release_file}
+    sed -i "s|^DISK_TYPE=.*|DISK_TYPE='emmc'|g" ${rebuild_release_file}
+    sed -i "s|^MLUBOOT_STATUS=.*|MLUBOOT_STATUS='${auto_mainline_uboot}'|g" ${rebuild_release_file}
+    sed -i "s|^AMPART_STATUS=.*|AMPART_STATUS='${AMPART_STATUS}'|g" ${rebuild_release_file}
 
     # Remove useless scripts
     rm -f ${DIR_INSTALL}/usr/sbin/armbian-tf

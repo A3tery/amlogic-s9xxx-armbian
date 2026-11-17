@@ -30,7 +30,7 @@
 #========================= Set default parameters ==========================
 #
 # Get custom firmware information
-ophub_release_file="/etc/ophub-release"
+rebuild_release_file="/etc/rebuild-release"
 # Backup of the legacy [ sources.list ], created by this tool only
 legacy_backup_file="/etc/apt/sources.list.armbian-apt.bak"
 # Plain legacy backup: ours from an earlier version, the user's, or [ apt modernize-sources ]
@@ -83,8 +83,8 @@ EOF
 
 # Check the system release information
 check_release() {
-    if [[ -f "${ophub_release_file}" ]]; then
-        source "${ophub_release_file}"
+    if [[ -f "${rebuild_release_file}" ]]; then
+        source "${rebuild_release_file}"
         VERSION_CODEID="${VERSION_CODEID}"
         VERSION_CODENAME="${VERSION_CODENAME}"
         [[ -z "${VERSION_CODEID}" ]] && error_msg "System VERSION_CODEID not detected!"

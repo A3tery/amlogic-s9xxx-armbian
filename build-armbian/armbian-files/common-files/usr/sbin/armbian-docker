@@ -22,7 +22,7 @@
 #========================= Set default parameters ==========================
 #
 # Get custom firmware information
-ophub_release_file="/etc/ophub-release"
+rebuild_release_file="/etc/rebuild-release"
 #
 # Set font color
 STEPS="[\033[95m STEPS \033[0m]"
@@ -73,7 +73,7 @@ EOF
 
 # Check system release information
 check_release() {
-    source "${ophub_release_file}"
+    source "${rebuild_release_file}"
     VERSION_CODEID="${VERSION_CODEID}"     # ubuntu          -  debian
     VERSION_CODENAME="${VERSION_CODENAME}" # resolute/noble  -  trixie/bookworm
     if [[ -z "${VERSION_CODEID}" ]]; then

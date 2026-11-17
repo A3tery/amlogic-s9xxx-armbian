@@ -623,7 +623,7 @@ armbian-update -s
 - `deb` 形式の更新に必要な4ファイル：`linux-image-xxx.deb`、`linux-dtb-xxx.deb`、`linux-headers-xxx.deb`、`linux-libc-dev-xxx.deb`
 - 関係のないカーネルファイルを削除する必要はありません。同時に存在しても更新に影響はなく、システムは必要なファイルを正確に識別できます。デバイスがサポートするカーネル範囲内であれば、バージョンを自由に切り替えることができます（例：6.6.12 カーネルから 5.15.50 カーネルへの変更）。
 
-`-r`/`-u`/`-b`/`-d` などのパラメータで設定したカスタムオプションは、設定ファイル `/etc/ophub-release` の関連パラメータに固定化でき、毎回手動入力する必要がなくなります。対応する設定は以下の通りです：
+`-r`/`-u`/`-b`/`-d` などのパラメータで設定したカスタムオプションは、設定ファイル `/etc/rebuild-release` の関連パラメータに固定化でき、毎回手動入力する必要がなくなります。対応する設定は以下の通りです：
 
 ```shell
 # カスタムパラメータの値の設定
@@ -641,7 +641,7 @@ Armbian システムにログイン → コマンドを入力：
 armbian-software
 ```
 
-`armbian-software -u` コマンドでローカルのソフトウェアセンターリストを更新できます。ユーザーからの [Issue](https://github.com/ophub/amlogic-s9xxx-armbian/issues) でのフィードバックに基づき、よく使う [ソフトウェア](../build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software/software-list.conf) を段階的に統合し、ワンクリックでのインストール、更新、アンインストールをサポートしています。`docker イメージ`、`デスクトップソフトウェア`、`アプリケーションサービス` などが含まれます。詳しくは [説明](armbian_software.md) を参照してください。
+`armbian-software -u` コマンドでローカルのソフトウェアセンターリストを更新できます。ユーザーからの [Issue](https://github.com/ophub/amlogic-s9xxx-armbian/issues) でのフィードバックに基づき、よく使う [ソフトウェア](../build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software/software-list.conf) を段階的に統合し、ワンクリックでのインストール、更新、アンインストールをサポートしています。`docker イメージ`、`デスクトップソフトウェア`、`アプリケーションサービス` などが含まれます。詳しくは [説明](armbian_software.md) を参照してください。
 
 お住まいの国や地域に応じて、`armbian-apt` コマンドで適切なソフトウェアソースを選択し、ダウンロード速度を向上させてください。例えば、中国の清華大学ソースを選択する場合：
 

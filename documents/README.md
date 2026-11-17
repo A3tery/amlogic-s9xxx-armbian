@@ -623,7 +623,7 @@ If network issues prevent downloading from github.com, manually download the ker
 - The 4 required files for `deb` format updates are: `linux-image-xxx.deb`, `linux-dtb-xxx.deb`, `linux-headers-xxx.deb`, and `linux-libc-dev-xxx.deb`.
 - Additional kernel files are optional and do not affect the update process, as the system accurately identifies the required files. Any supported kernel version can be installed, e.g., switching from 6.6.12 to 5.15.50.
 
-Custom options set via `-r`/`-u`/`-b`/`-d` can be saved permanently in `/etc/ophub-release` to avoid re-entering them each time. The corresponding settings are:
+Custom options set via `-r`/`-u`/`-b`/`-d` can be saved permanently in `/etc/rebuild-release` to avoid re-entering them each time. The corresponding settings are:
 
 ```shell
 # Assign values to custom parameters
@@ -641,7 +641,7 @@ Log in to the Armbian system → Enter the command:
 armbian-software
 ```
 
-Use `armbian-software -u` to update the local software center list. Based on community feedback in [Issue](https://github.com/ophub/amlogic-s9xxx-armbian/issues), commonly used [software](../build-armbian/armbian-files/common-files/usr/share/ophub/armbian-software/software-list.conf) is gradually integrated with one-click installation, update, and uninstallation support. This includes `docker images`, `desktop software`, `application services`, etc. See more [instructions](armbian_software.md).
+Use `armbian-software -u` to update the local software center list. Based on community feedback in [Issue](https://github.com/ophub/amlogic-s9xxx-armbian/issues), commonly used [software](../build-armbian/armbian-files/common-files/usr/share/rebuild/armbian-software/software-list.conf) is gradually integrated with one-click installation, update, and uninstallation support. This includes `docker images`, `desktop software`, `application services`, etc. See more [instructions](armbian_software.md).
 
 Use `armbian-apt` to select an appropriate software mirror for your region, improving download speeds. For example, select the `mirrors.tuna.tsinghua.edu.cn` source in China:
 

@@ -75,7 +75,7 @@ armbian_release_file="etc/armbian-release"
 # Add personalized settings for special devices, such as [ s922x-oes-plus ]
 board_release_file="etc/armbian-board-release.conf"
 # Add custom armbian information
-ophub_release_file="etc/ophub-release"
+rebuild_release_file="etc/rebuild-release"
 
 # U-BOOT files download repository
 uboot_repo="https://github.com/ophub/u-boot"
@@ -928,9 +928,9 @@ replace_kernel() {
     # Extract kernel name: boot-6.12.69-ophub.tar.gz -> 6.12.69-ophub
     kernel_name="${kernel_boot##*/}" && kernel_name="${kernel_name:5:-7}"
     [[ -n "${kernel_name}" ]] || error_msg "Missing kernel files for [ ${kernel} ]"
-    # Extract kernel signature: 6.12.69-ophub -> ophub
+    # Extract kernel signature: 6.12.69-ophub -> ophub, 6.18.63 -> empty
     kernel_signature="${kernel_name#*-}"
-    [[ -n "${kernel_signature}" ]] || error_msg "Missing kernel signature: [ ${kernel_name} ]"
+    [[ "${kernel_signature}" == "${kernel_name}" ]] && kernel_signature=""
     # Determine the kernel dtb, modules and header files based on the kernel name
     kernel_dtb="${kernel_path}/${conf_kernel_tags}/${kernel}/dtb-${PLATFORM}-${kernel_name}.tar.gz"
     kernel_modules="${kernel_path}/${conf_kernel_tags}/${kernel}/modules-${kernel_name}.tar.gz"
@@ -1336,14 +1336,14 @@ refactor_rootfs() {
         "MAINLINE_UBOOT='${RECORD_MAINLINE_UBOOT}'"
         "BOOTLOADER_IMG='${RECORD_BOOTLOADER_IMG}'"
         "BUILD_REPOSITORY='github.com/armbian/build'"
-        "REBUILD_REPOSITORY='github.com/ophub/amlogic-s9xxx-armbian'"
+        "REBUILD_REPOSITORY='github.com/A3tery/amlogic-s9xxx-armbian'"
         "CONTRIBUTORS='${CONTRIBUTORS}'"
         "BUILDER_NAME='${builder_name}'"
         "PACKAGED_DATE='$(date +%Y-%m-%d)'"
     )
     [[ "${PLATFORM}" == "rockchip" ]] && release_lines+=("TRUST_IMG='${RECORD_TRUST_IMG}'")
     [[ "${PLATFORM}" == "amlogic" ]] && release_lines+=("UBOOT_OVERLOAD='${UBOOT_OVERLOAD}'")
-    printf '%s\n' "${release_lines[@]}" >>${ophub_release_file}
+    printf '%s\n' "${release_lines[@]}" >>${rebuild_release_file}
 
     sync && sleep 3
 }
